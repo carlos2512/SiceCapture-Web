@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="OperacionesEditDlg" widgetVar="OperacionesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditOperacionesTitle}" closeOnEscape="true">
+
+            <h:form id="OperacionesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{operacionesController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditOperacionesLabel_idOperaciones}" for="idOperaciones" />
+                        <h:outputText id="idOperaciones" value="#{operacionesController.selected.idOperaciones}" />
+
+                        <p:outputLabel value="#{myBundle.EditOperacionesLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{operacionesController.selected.nombre}" title="#{myBundle.EditOperacionesTitle_nombre}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditOperacionesLabel_descripcion}" for="descripcion" />
+                        <p:inputText id="descripcion" value="#{operacionesController.selected.descripcion}" title="#{myBundle.EditOperacionesTitle_descripcion}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditOperacionesLabel_codigo}" for="codigo" />
+                        <p:inputText id="codigo" value="#{operacionesController.selected.codigo}" title="#{myBundle.EditOperacionesTitle_codigo}" required="true" requiredMessage="#{myBundle.EditOperacionesRequiredMessage_codigo}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditOperacionesLabel_url}" for="url" />
+                        <p:inputText id="url" value="#{operacionesController.selected.url}" title="#{myBundle.EditOperacionesTitle_url}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditOperacionesLabel_estado}" for="estado" />
+                        <p:inputText id="estado" value="#{operacionesController.selected.estado}" title="#{myBundle.EditOperacionesTitle_estado}" required="true" requiredMessage="#{myBundle.EditOperacionesRequiredMessage_estado}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditOperacionesLabel_perfilesCollection}" for="perfilesCollection" />
+                        <p:selectManyMenu id="perfilesCollection" value="#{operacionesController.selected.perfilesCollection}"  converter="perfilesConverter">
+                            <f:selectItems value="#{perfilesController.items}"
+                                           var="perfilesCollectionItem"
+                                           itemValue="#{perfilesCollectionItem}"
+                                           itemLabel="#{perfilesCollectionItem.idPerfiles.toString()}"
+                                           />
+
+                        </p:selectManyMenu>
+
+                        <p:outputLabel value="#{myBundle.EditOperacionesLabel_operacionPadre}" for="operacionPadre" />
+                        <p:selectOneMenu id="operacionPadre" value="#{operacionesController.selected.operacionPadre}" required="true" requiredMessage="#{myBundle.EditOperacionesRequiredMessage_operacionPadre}" converter="operacionesConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{operacionesController.items}"
+                                           var="operacionPadreItem"
+                                           itemValue="#{operacionPadreItem}"
+                                           itemLabel="#{operacionPadreItem.descripcion.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{myBundle.EditOperacionesLabel_tipoOperacion}" for="tipoOperacion" />
+                        <p:selectOneMenu id="tipoOperacion" value="#{operacionesController.selected.tipoOperacion}" required="true" requiredMessage="#{myBundle.EditOperacionesRequiredMessage_tipoOperacion}" converter="tipoOperacionesConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{tipoOperacionesController.items}"
+                                           var="tipoOperacionItem"
+                                           itemValue="#{tipoOperacionItem}"
+                                           itemLabel="#{tipoOperacionItem.descripcion.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{operacionesController.save}" value="#{myBundle.Save}" update="display,:OperacionesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('OperacionesEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('OperacionesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

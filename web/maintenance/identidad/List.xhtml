@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="IdentidadListForm">
+
+        <p:panel header="#{myBundle.ListIdentidadTitle}">
+            <p:contextMenu id="IdentidadDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('IdentidadListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('IdentidadListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('IdentidadListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('IdentidadListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.IdentidadMenuItem_persona}" icon="ui-icon-search"  actionListener="#{identidadController.preparePersona}" update=":PersonaViewForm" oncomplete="PF('PersonaViewDialog').show()" disabled="#{empty identidadController.selected.persona}"/>  
+                <p:menuitem value="#{myBundle.IdentidadMenuItem_usuario}" icon="ui-icon-search"  actionListener="#{identidadController.prepareUsuario}" update=":UsuarioViewForm" oncomplete="PF('UsuarioViewDialog').show()" disabled="#{empty identidadController.selected.usuario}"/>  
+                <p:menuitem value="#{myBundle.IdentidadMenuItem_perfiles}" icon="ui-icon-search"  actionListener="#{identidadController.preparePerfiles}" update=":PerfilesViewForm" oncomplete="PF('PerfilesViewDialog').show()" disabled="#{empty identidadController.selected.perfiles}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{identidadController.lazyItems}"
+                         lazy="true"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{identidadController.selected}">
+                <!--
+                         To disable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{identidadController.items}"
+                         lazy="false"
+                         rowKey="HASH{item.identidadPK}"
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:IdentidadDataTableContextMenu" listener="#{identidadController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:IdentidadDataTableContextMenu" listener="#{identidadController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{identidadController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('IdentidadListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.identidadPK.fkPersona}" filterBy="#{item.identidadPK.fkPersona}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListIdentidadTitle_identidadPK_fkPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.identidadPK.fkPersona}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.identidadPK.fkUsuario}" filterBy="#{item.identidadPK.fkUsuario}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListIdentidadTitle_identidadPK_fkUsuario}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.identidadPK.fkUsuario}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.identidadPK.fkPerfil}" filterBy="#{item.identidadPK.fkPerfil}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListIdentidadTitle_identidadPK_fkPerfil}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.identidadPK.fkPerfil}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.persona.idPersona}" filterBy="#{item.persona.idPersona}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListIdentidadTitle_persona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.persona.idPersona}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.usuario.idUsuario}" filterBy="#{item.usuario.idUsuario}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListIdentidadTitle_usuario}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.usuario.idUsuario}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.perfiles.idPerfiles}" filterBy="#{item.perfiles.idPerfiles}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListIdentidadTitle_perfiles}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.perfiles.idPerfiles}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{identidadController.prepareCreate}" update=":IdentidadCreateForm" oncomplete="PF('IdentidadCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":IdentidadViewForm" oncomplete="PF('IdentidadViewDialog').show()" disabled="#{empty identidadController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":IdentidadEditForm" oncomplete="PF('IdentidadEditDialog').show()" disabled="#{empty identidadController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{identidadController.delete}" update=":growl,datalist" disabled="#{empty identidadController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{myBundle.AppName}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form>
+                <p:panel id="panel" header="#{myBundle.LoginTitle}" >
+                    <p:messages id="msgs"  />
+                    <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;">
+                        <p:outputLabel for="loginUsername" value="#{myBundle.LoginUser}" />
+                        <p:inputText id="loginUsername" value="#{loginController.username}" required="true" label="#{myBundle.LoginUser}">
+                            <f:validateLength minimum="2" />
+                        </p:inputText>
+                        <p:message for="loginUsername" display="icon" />
+
+                        <p:outputLabel for="loginPassword" value="#{myBundle.LoginPassword}" />
+                        <p:inputText id="loginPassword" value="#{loginController.password}" label="#{myBundle.LoginPassword}" required="true">
+                            <f:validateLength minimum="2" />
+                        </p:inputText>
+                        <p:message for="loginPassword" id="msgPassword" display="icon" />
+                        <br/>
+                        <p:commandButton value="#{myBundle.LoginIngresar}" action="#{loginController.validateCredentials()}" update="panel" icon="ui-icon-check" />
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

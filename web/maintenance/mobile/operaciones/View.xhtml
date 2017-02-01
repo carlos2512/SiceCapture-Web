@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="OperacionesViewPage" lazy="true">
+        <pm:header title="#{myBundle.ViewOperacionesTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:OperacionesListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="OperacionesViewForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{operacionesController.selected != null}">
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewOperacionesLabel_idOperaciones}"/>
+                            <h:outputText value="#{operacionesController.selected.idOperaciones}" title="#{myBundle.ViewOperacionesTitle_idOperaciones}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewOperacionesLabel_nombre}"/>
+                            <h:outputText value="#{operacionesController.selected.nombre}" title="#{myBundle.ViewOperacionesTitle_nombre}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewOperacionesLabel_descripcion}"/>
+                            <h:outputText value="#{operacionesController.selected.descripcion}" title="#{myBundle.ViewOperacionesTitle_descripcion}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewOperacionesLabel_codigo}"/>
+                            <h:outputText value="#{operacionesController.selected.codigo}" title="#{myBundle.ViewOperacionesTitle_codigo}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewOperacionesLabel_url}"/>
+                            <h:outputText value="#{operacionesController.selected.url}" title="#{myBundle.ViewOperacionesTitle_url}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewOperacionesLabel_estado}"/>
+                            <h:outputText value="#{operacionesController.selected.estado}" title="#{myBundle.ViewOperacionesTitle_estado}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewOperacionesLabel_perfilesCollection}"/>
+                            <h:selectManyMenu converter="perfilesConverter">
+                                <f:selectItems value="#{operacionesController.selected.perfilesCollection}"
+                                               var="perfilesCollectionItem"
+                                               itemValue="#{perfilesCollectionItem}"
+                                               itemLabel="#{perfilesCollectionItem.idPerfiles.toString()}"
+                                               />
+
+                            </h:selectManyMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewOperacionesLabel_operacionPadre}"/>
+                            <h:outputText value="#{operacionesController.selected.operacionPadre.descripcion}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewOperacionesLabel_tipoOperacion}"/>
+                            <h:outputText value="#{operacionesController.selected.tipoOperacion.descripcion}"/>
+                        </pm:field>
+                    </p:outputPanel>
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

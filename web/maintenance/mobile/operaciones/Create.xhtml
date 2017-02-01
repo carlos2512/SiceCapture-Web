@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="OperacionesCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreateOperacionesTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:OperacionesListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="OperacionesCreateForm">
+
+                <h:panelGroup id="display" rendered="#{operacionesController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateOperacionesLabel_nombre}" for="nombre" />
+                            <p:inputText id="nombre" value="#{operacionesController.selected.nombre}" title="#{myBundle.CreateOperacionesTitle_nombre}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateOperacionesLabel_descripcion}" for="descripcion" />
+                            <p:inputText id="descripcion" value="#{operacionesController.selected.descripcion}" title="#{myBundle.CreateOperacionesTitle_descripcion}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateOperacionesLabel_codigo}" for="codigo" />
+                            <p:inputText id="codigo" value="#{operacionesController.selected.codigo}" title="#{myBundle.CreateOperacionesTitle_codigo}" required="true" requiredMessage="#{myBundle.CreateOperacionesRequiredMessage_codigo}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateOperacionesLabel_url}" for="url" />
+                            <p:inputText id="url" value="#{operacionesController.selected.url}" title="#{myBundle.CreateOperacionesTitle_url}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateOperacionesLabel_estado}" for="estado" />
+                            <p:inputText id="estado" value="#{operacionesController.selected.estado}" title="#{myBundle.CreateOperacionesTitle_estado}" required="true" requiredMessage="#{myBundle.CreateOperacionesRequiredMessage_estado}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateOperacionesLabel_perfilesCollection}" for="perfilesCollection" />
+                            <p:selectManyMenu id="perfilesCollection" value="#{operacionesController.selected.perfilesCollection}"  converter="perfilesConverter">
+                                <f:selectItems value="#{perfilesController.items}"
+                                               var="perfilesCollectionItem"
+                                               itemValue="#{perfilesCollectionItem}"
+                                               itemLabel="#{perfilesCollectionItem.idPerfiles.toString()}"
+                                               />
+
+                            </p:selectManyMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateOperacionesLabel_operacionPadre}" for="operacionPadre" />
+                            <p:selectOneMenu id="operacionPadre" value="#{operacionesController.selected.operacionPadre}" required="true" requiredMessage="#{myBundle.CreateOperacionesRequiredMessage_operacionPadre}" converter="operacionesConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{operacionesController.items}"
+                                               var="operacionPadreItem"
+                                               itemValue="#{operacionPadreItem}"
+                                               itemLabel="#{operacionPadreItem.descripcion.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateOperacionesLabel_tipoOperacion}" for="tipoOperacion" />
+                            <p:selectOneMenu id="tipoOperacion" value="#{operacionesController.selected.tipoOperacion}" required="true" requiredMessage="#{myBundle.CreateOperacionesRequiredMessage_tipoOperacion}" converter="tipoOperacionesConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{tipoOperacionesController.items}"
+                                               var="tipoOperacionItem"
+                                               itemValue="#{tipoOperacionItem}"
+                                               itemLabel="#{tipoOperacionItem.descripcion.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{operacionesController.saveNew}" value="#{myBundle.Save}" update="display,:OperacionesListPage:OperacionesListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:OperacionesListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

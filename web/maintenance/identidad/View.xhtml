@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="IdentidadViewDlg" widgetVar="IdentidadViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewIdentidadTitle}" closeOnEscape="true">
+
+            <h:form id="IdentidadViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{identidadController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewIdentidadLabel_identidadPK_fkPersona}"/>
+                        <h:outputText value="#{identidadController.selected.identidadPK.fkPersona}" title="#{myBundle.ViewIdentidadTitle_identidadPK_fkPersona}"/>
+
+                        <h:outputText value="#{myBundle.ViewIdentidadLabel_identidadPK_fkUsuario}"/>
+                        <h:outputText value="#{identidadController.selected.identidadPK.fkUsuario}" title="#{myBundle.ViewIdentidadTitle_identidadPK_fkUsuario}"/>
+
+                        <h:outputText value="#{myBundle.ViewIdentidadLabel_identidadPK_fkPerfil}"/>
+                        <h:outputText value="#{identidadController.selected.identidadPK.fkPerfil}" title="#{myBundle.ViewIdentidadTitle_identidadPK_fkPerfil}"/>
+
+                        <h:outputText value="#{myBundle.ViewIdentidadLabel_persona}"/>
+                        <h:outputText value="#{identidadController.selected.persona.idPersona}"/>
+
+                        <h:outputText value="#{myBundle.ViewIdentidadLabel_usuario}"/>
+                        <h:outputText value="#{identidadController.selected.usuario.idUsuario}"/>
+
+                        <h:outputText value="#{myBundle.ViewIdentidadLabel_perfiles}"/>
+                        <h:outputText value="#{identidadController.selected.perfiles.idPerfiles}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('IdentidadViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

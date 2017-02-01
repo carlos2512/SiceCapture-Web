@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TipoOperacionesCreateDlg" widgetVar="TipoOperacionesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{myBundle.CreateTipoOperacionesTitle}" closeOnEscape="true">
+
+            <h:form id="TipoOperacionesCreateForm">
+
+                <h:panelGroup id="display" rendered="#{tipoOperacionesController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{myBundle.CreateTipoOperacionesLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{tipoOperacionesController.selected.nombre}" title="#{myBundle.CreateTipoOperacionesTitle_nombre}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.CreateTipoOperacionesLabel_descripcion}" for="descripcion" />
+                        <p:inputText id="descripcion" value="#{tipoOperacionesController.selected.descripcion}" title="#{myBundle.CreateTipoOperacionesTitle_descripcion}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.CreateTipoOperacionesLabel_codigo}" for="codigo" />
+                        <p:inputText id="codigo" value="#{tipoOperacionesController.selected.codigo}" title="#{myBundle.CreateTipoOperacionesTitle_codigo}" required="true" requiredMessage="#{myBundle.CreateTipoOperacionesRequiredMessage_codigo}" size="45" maxlength="45"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tipoOperacionesController.saveNew}" value="#{myBundle.Save}" update="display,:TipoOperacionesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('TipoOperacionesCreateDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('TipoOperacionesCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

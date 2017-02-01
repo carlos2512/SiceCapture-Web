@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PerfilesEditDlg" widgetVar="PerfilesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditPerfilesTitle}" closeOnEscape="true">
+
+            <h:form id="PerfilesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{perfilesController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditPerfilesLabel_idPerfiles}" for="idPerfiles" />
+                        <h:outputText id="idPerfiles" value="#{perfilesController.selected.idPerfiles}" />
+
+                        <p:outputLabel value="#{myBundle.EditPerfilesLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{perfilesController.selected.nombre}" title="#{myBundle.EditPerfilesTitle_nombre}" required="true" requiredMessage="#{myBundle.EditPerfilesRequiredMessage_nombre}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditPerfilesLabel_estado}" for="estado" />
+                        <p:inputText id="estado" value="#{perfilesController.selected.estado}" title="#{myBundle.EditPerfilesTitle_estado}" required="true" requiredMessage="#{myBundle.EditPerfilesRequiredMessage_estado}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditPerfilesLabel_idioma}" for="idioma" />
+                        <p:inputText id="idioma" value="#{perfilesController.selected.idioma}" title="#{myBundle.EditPerfilesTitle_idioma}" required="true" requiredMessage="#{myBundle.EditPerfilesRequiredMessage_idioma}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditPerfilesLabel_estilo}" for="estilo" />
+                        <p:inputText id="estilo" value="#{perfilesController.selected.estilo}" title="#{myBundle.EditPerfilesTitle_estilo}" required="true" requiredMessage="#{myBundle.EditPerfilesRequiredMessage_estilo}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditPerfilesLabel_perfilPadre}" for="perfilPadre" />
+                        <p:selectOneMenu id="perfilPadre" value="#{perfilesController.selected.perfilPadre}"  converter="perfilesConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{perfilesController.items}"
+                                           var="perfilPadreItem"
+                                           itemValue="#{perfilPadreItem}"
+                                           itemLabel="#{perfilPadreItem.idPerfiles.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{myBundle.EditPerfilesLabel_tipoPerfil}" for="tipoPerfil" />
+                        <p:selectOneMenu id="tipoPerfil" value="#{perfilesController.selected.tipoPerfil}" required="true" requiredMessage="#{myBundle.EditPerfilesRequiredMessage_tipoPerfil}" converter="tipoPerfilesConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{tipoPerfilesController.items}"
+                                           var="tipoPerfilItem"
+                                           itemValue="#{tipoPerfilItem}"
+                                           itemLabel="#{tipoPerfilItem.descripcion.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{perfilesController.save}" value="#{myBundle.Save}" update="display,:PerfilesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PerfilesEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('PerfilesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

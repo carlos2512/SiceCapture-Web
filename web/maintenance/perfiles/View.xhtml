@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PerfilesViewDlg" widgetVar="PerfilesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewPerfilesTitle}" closeOnEscape="true">
+
+            <h:form id="PerfilesViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{perfilesController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewPerfilesLabel_idPerfiles}"/>
+                        <h:outputText value="#{perfilesController.selected.idPerfiles}" title="#{myBundle.ViewPerfilesTitle_idPerfiles}"/>
+
+                        <h:outputText value="#{myBundle.ViewPerfilesLabel_nombre}"/>
+                        <h:outputText value="#{perfilesController.selected.nombre}" title="#{myBundle.ViewPerfilesTitle_nombre}"/>
+
+                        <h:outputText value="#{myBundle.ViewPerfilesLabel_estado}"/>
+                        <h:outputText value="#{perfilesController.selected.estado}" title="#{myBundle.ViewPerfilesTitle_estado}"/>
+
+                        <h:outputText value="#{myBundle.ViewPerfilesLabel_idioma}"/>
+                        <h:outputText value="#{perfilesController.selected.idioma}" title="#{myBundle.ViewPerfilesTitle_idioma}"/>
+
+                        <h:outputText value="#{myBundle.ViewPerfilesLabel_estilo}"/>
+                        <h:outputText value="#{perfilesController.selected.estilo}" title="#{myBundle.ViewPerfilesTitle_estilo}"/>
+
+                        <h:outputText value="#{myBundle.ViewPerfilesLabel_perfilPadre}"/>
+                        <h:outputText value="#{perfilesController.selected.perfilPadre.idPerfiles}"/>
+
+                        <h:outputText value="#{myBundle.ViewPerfilesLabel_tipoPerfil}"/>
+                        <h:outputText value="#{perfilesController.selected.tipoPerfil.descripcion}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('PerfilesViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

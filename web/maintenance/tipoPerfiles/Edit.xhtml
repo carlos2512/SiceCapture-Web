@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="TipoPerfilesEditDlg" widgetVar="TipoPerfilesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditTipoPerfilesTitle}" closeOnEscape="true">
+
+            <h:form id="TipoPerfilesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{tipoPerfilesController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditTipoPerfilesLabel_idTipoPerfiles}" for="idTipoPerfiles" />
+                        <h:outputText id="idTipoPerfiles" value="#{tipoPerfilesController.selected.idTipoPerfiles}" />
+
+                        <p:outputLabel value="#{myBundle.EditTipoPerfilesLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{tipoPerfilesController.selected.nombre}" title="#{myBundle.EditTipoPerfilesTitle_nombre}" size="45" maxlength="45"/>
+
+                        <p:outputLabel value="#{myBundle.EditTipoPerfilesLabel_descripcion}" for="descripcion" />
+                        <p:inputText id="descripcion" value="#{tipoPerfilesController.selected.descripcion}" title="#{myBundle.EditTipoPerfilesTitle_descripcion}" size="100" maxlength="100"/>
+
+                        <p:outputLabel value="#{myBundle.EditTipoPerfilesLabel_codigo}" for="codigo" />
+                        <p:inputText id="codigo" value="#{tipoPerfilesController.selected.codigo}" title="#{myBundle.EditTipoPerfilesTitle_codigo}" required="true" requiredMessage="#{myBundle.EditTipoPerfilesRequiredMessage_codigo}" size="45" maxlength="45"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tipoPerfilesController.save}" value="#{myBundle.Save}" update="display,:TipoPerfilesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('TipoPerfilesEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('TipoPerfilesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

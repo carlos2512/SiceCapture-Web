@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="IdentidadListPage">
+        <pm:header title="#{myBundle.ListIdentidadTitle}">
+            <h:form>
+                <p:commandButton id="backButton"   styleClass="ui-btn-left  ui-btn-inline" icon="ui-icon-arrow-l" value="#{myBundle.Back}" action="#{mobilePageController.navigateBackInHistory('/mobile/index')}"/>
+                <p:commandButton id="createButton" styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-plus"    value="#{myBundle.Create}" update=":IdentidadCreatePage:IdentidadCreateForm" actionListener="#{identidadController.prepareCreate}" action="#{mobilePageController.navigateWithHistory('pm:IdentidadCreatePage')}">
+                    <f:actionListener binding="#{currentPageListener}"/>
+                </p:commandButton>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="IdentidadListForm">
+
+                <p:dataTable id="datalist"
+                             value="#{identidadController.items}"
+                             var="item"
+                             rowKey="#{item.identidadPK}"
+                             paginator="true"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{identidadController.selected}"
+                             reflow="true">
+
+                    <p:ajax event="rowSelect"   update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{identidadController.resetParents}"/>
+                    <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{identidadController.resetParents}"/>
+                    <p:ajax event="swipeleft"   oncomplete="document.getElementById('IdentidadListPage:IdentidadListForm:deleteButton').click();"/>
+                    <p:ajax event="tap"         oncomplete="document.getElementById('IdentidadListPage:IdentidadListForm:editButton').click();"/>
+                    <p:ajax event="taphold"     oncomplete="document.getElementById('IdentidadListPage:IdentidadListForm:navigationMenuButton').click();"/>
+
+                    <p:column sortBy="#{item.identidadPK.fkPersona}" filterBy="#{item.identidadPK.fkPersona}" headerText="#{myBundle.ListIdentidadTitle_identidadPK_fkPersona}">
+                        <h:outputText value="#{item.identidadPK.fkPersona}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.identidadPK.fkUsuario}" filterBy="#{item.identidadPK.fkUsuario}" headerText="#{myBundle.ListIdentidadTitle_identidadPK_fkUsuario}">
+                        <h:outputText value="#{item.identidadPK.fkUsuario}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.identidadPK.fkPerfil}" filterBy="#{item.identidadPK.fkPerfil}" headerText="#{myBundle.ListIdentidadTitle_identidadPK_fkPerfil}">
+                        <h:outputText value="#{item.identidadPK.fkPerfil}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.persona.idPersona}" filterBy="#{item.persona.idPersona}" headerText="#{myBundle.ListIdentidadTitle_persona}">
+                        <h:outputText value="#{item.persona.idPersona}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.usuario.idUsuario}" filterBy="#{item.usuario.idUsuario}" headerText="#{myBundle.ListIdentidadTitle_usuario}">
+                        <h:outputText value="#{item.usuario.idUsuario}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.perfiles.idPerfiles}" filterBy="#{item.perfiles.idPerfiles}" headerText="#{myBundle.ListIdentidadTitle_perfiles}">
+                        <h:outputText value="#{item.perfiles.idPerfiles}"/>
+                    </p:column>
+
+                </p:dataTable>
+                <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":IdentidadEditPage:IdentidadEditForm" disabled="#{empty identidadController.selected}" actionListener="#{mobilePageController.currentPageListener}" action="#{mobilePageController.navigateWithHistory('pm:IdentidadEditPage')}"/>
+                <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{identidadController.delete}" update=":growl,datalist" disabled="#{empty identidadController.selected}">
+                    <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="navigationMenuButton" style="visibility: hidden;" value="#{myBundle.Menu}" disabled="#{empty identidadController.selected}"/>
+
+                <p:overlayPanel id="navigationMenuPanel" for="navigationMenuButton" at="right" showEffect="overlay">
+                    <h2>#{myBundle.IdentidadHeading} #{myBundle.Menu}</h2>
+                    <p:menu>
+                        <p:menuitem value="#{myBundle.IdentidadMenuItem_persona}" icon="ui-icon-search" update=":PersonaEditPage:PersonaEditForm" disabled="#{empty identidadController.selected.persona}" actionListener="#{identidadController.preparePersona}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:PersonaEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.IdentidadMenuItem_usuario}" icon="ui-icon-search" update=":UsuarioEditPage:UsuarioEditForm" disabled="#{empty identidadController.selected.usuario}" actionListener="#{identidadController.prepareUsuario}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:UsuarioEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.IdentidadMenuItem_perfiles}" icon="ui-icon-search" update=":PerfilesEditPage:PerfilesEditForm" disabled="#{empty identidadController.selected.perfiles}" actionListener="#{identidadController.preparePerfiles}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:PerfilesEditPage"/>
+                        </p:menuitem>
+                    </p:menu>
+                </p:overlayPanel>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

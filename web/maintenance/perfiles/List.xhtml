@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="PerfilesListForm">
+
+        <p:panel header="#{myBundle.ListPerfilesTitle}">
+            <p:contextMenu id="PerfilesDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('PerfilesListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('PerfilesListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('PerfilesListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('PerfilesListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.PerfilesMenuItem_operacionesCollection}" icon="ui-icon-search"  action="#{perfilesController.navigateOperacionesCollection}" disabled="#{empty perfilesController.selected.operacionesCollection}" ajax="false"/>  
+                <p:menuitem value="#{myBundle.PerfilesMenuItem_perfilesCollection}" icon="ui-icon-search"  action="#{perfilesController.navigatePerfilesCollection}" disabled="#{empty perfilesController.selected.perfilesCollection}" ajax="false"/>  
+                <p:menuitem value="#{myBundle.PerfilesMenuItem_perfilPadre}" icon="ui-icon-search"  actionListener="#{perfilesController.preparePerfilPadre}" update=":PerfilesViewForm" oncomplete="PF('PerfilesViewDialog').show()" disabled="#{empty perfilesController.selected.perfilPadre}"/>  
+                <p:menuitem value="#{myBundle.PerfilesMenuItem_tipoPerfil}" icon="ui-icon-search"  actionListener="#{perfilesController.prepareTipoPerfil}" update=":TipoPerfilesViewForm" oncomplete="PF('TipoPerfilesViewDialog').show()" disabled="#{empty perfilesController.selected.tipoPerfil}"/>  
+                <p:menuitem value="#{myBundle.PerfilesMenuItem_identidadCollection}" icon="ui-icon-search"  action="#{perfilesController.navigateIdentidadCollection}" disabled="#{empty perfilesController.selected.identidadCollection}" ajax="false"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{perfilesController.lazyItems}"
+                         lazy="true"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{perfilesController.selected}">
+                <!--
+                         To disable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{perfilesController.items}"
+                         lazy="false"
+                         rowKey="HASH{item.idPerfiles}"
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:PerfilesDataTableContextMenu" listener="#{perfilesController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:PerfilesDataTableContextMenu" listener="#{perfilesController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{perfilesController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('PerfilesListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.idPerfiles}" filterBy="#{item.idPerfiles}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPerfilesTitle_idPerfiles}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idPerfiles}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.nombre}" filterBy="#{item.nombre}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPerfilesTitle_nombre}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nombre}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.estado}" filterBy="#{item.estado}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPerfilesTitle_estado}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.estado}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.idioma}" filterBy="#{item.idioma}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPerfilesTitle_idioma}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.idioma}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.estilo}" filterBy="#{item.estilo}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPerfilesTitle_estilo}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.estilo}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.perfilPadre.idPerfiles}" filterBy="#{item.perfilPadre.idPerfiles}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListPerfilesTitle_perfilPadre}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.perfilPadre.idPerfiles}"/>
+                </p:column>
+
+                <!--
+                                    <p:column sortBy="#{item.tipoPerfil.descripcion}" filterBy="#{item.tipoPerfil.descripcion}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{myBundle.ListPerfilesTitle_tipoPerfil}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.tipoPerfil.descripcion}"/>
+                                    </p:column>
+                -->
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{perfilesController.prepareCreate}" update=":PerfilesCreateForm" oncomplete="PF('PerfilesCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":PerfilesViewForm" oncomplete="PF('PerfilesViewDialog').show()" disabled="#{empty perfilesController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":PerfilesEditForm" oncomplete="PF('PerfilesEditDialog').show()" disabled="#{empty perfilesController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{perfilesController.delete}" update=":growl,datalist" disabled="#{empty perfilesController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

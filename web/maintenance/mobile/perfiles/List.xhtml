@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PerfilesListPage">
+        <pm:header title="#{myBundle.ListPerfilesTitle}">
+            <h:form>
+                <p:commandButton id="backButton"   styleClass="ui-btn-left  ui-btn-inline" icon="ui-icon-arrow-l" value="#{myBundle.Back}" action="#{mobilePageController.navigateBackInHistory('/mobile/index')}"/>
+                <p:commandButton id="createButton" styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-plus"    value="#{myBundle.Create}" update=":PerfilesCreatePage:PerfilesCreateForm" actionListener="#{perfilesController.prepareCreate}" action="#{mobilePageController.navigateWithHistory('pm:PerfilesCreatePage')}">
+                    <f:actionListener binding="#{currentPageListener}"/>
+                </p:commandButton>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PerfilesListForm">
+
+                <p:dataTable id="datalist"
+                             value="#{perfilesController.items}"
+                             var="item"
+                             rowKey="#{item.idPerfiles}"
+                             paginator="true"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{perfilesController.selected}"
+                             reflow="true">
+
+                    <p:ajax event="rowSelect"   update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{perfilesController.resetParents}"/>
+                    <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{perfilesController.resetParents}"/>
+                    <p:ajax event="swipeleft"   oncomplete="document.getElementById('PerfilesListPage:PerfilesListForm:deleteButton').click();"/>
+                    <p:ajax event="tap"         oncomplete="document.getElementById('PerfilesListPage:PerfilesListForm:editButton').click();"/>
+                    <p:ajax event="taphold"     oncomplete="document.getElementById('PerfilesListPage:PerfilesListForm:navigationMenuButton').click();"/>
+
+                    <p:column sortBy="#{item.idPerfiles}" filterBy="#{item.idPerfiles}" headerText="#{myBundle.ListPerfilesTitle_idPerfiles}">
+                        <h:outputText value="#{item.idPerfiles}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.nombre}" filterBy="#{item.nombre}" headerText="#{myBundle.ListPerfilesTitle_nombre}">
+                        <h:outputText value="#{item.nombre}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.estado}" filterBy="#{item.estado}" headerText="#{myBundle.ListPerfilesTitle_estado}">
+                        <h:outputText value="#{item.estado}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.idioma}" filterBy="#{item.idioma}" headerText="#{myBundle.ListPerfilesTitle_idioma}">
+                        <h:outputText value="#{item.idioma}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.estilo}" filterBy="#{item.estilo}" headerText="#{myBundle.ListPerfilesTitle_estilo}">
+                        <h:outputText value="#{item.estilo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.perfilPadre.idPerfiles}" filterBy="#{item.perfilPadre.idPerfiles}" headerText="#{myBundle.ListPerfilesTitle_perfilPadre}">
+                        <h:outputText value="#{item.perfilPadre.idPerfiles}"/>
+                    </p:column>
+
+                    <!--
+                                        <p:column sortBy="#{item.tipoPerfil.descripcion}" filterBy="#{item.tipoPerfil.descripcion}" headerText="#{myBundle.ListPerfilesTitle_tipoPerfil}">
+                                            <h:outputText value="#{item.tipoPerfil.descripcion}"/>
+                                        </p:column>
+                    -->
+                </p:dataTable>
+                <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":PerfilesEditPage:PerfilesEditForm" disabled="#{empty perfilesController.selected}" actionListener="#{mobilePageController.currentPageListener}" action="#{mobilePageController.navigateWithHistory('pm:PerfilesEditPage')}"/>
+                <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{perfilesController.delete}" update=":growl,datalist" disabled="#{empty perfilesController.selected}">
+                    <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="navigationMenuButton" style="visibility: hidden;" value="#{myBundle.Menu}" disabled="#{empty perfilesController.selected}"/>
+
+                <p:overlayPanel id="navigationMenuPanel" for="navigationMenuButton" at="right" showEffect="overlay">
+                    <h2>#{myBundle.PerfilesHeading} #{myBundle.Menu}</h2>
+                    <p:menu>
+                        <p:menuitem value="#{myBundle.PerfilesMenuItem_operacionesCollection}" icon="ui-icon-search"  action="#{mobilePageController.navigateWithHistory}" disabled="#{empty perfilesController.selected.operacionesCollection}" ajax="false">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="#{perfilesController.navigateOperacionesCollection()}"/>
+                        </p:menuitem>  
+                        <p:menuitem value="#{myBundle.PerfilesMenuItem_perfilesCollection}" icon="ui-icon-search"  action="#{mobilePageController.navigateWithHistory}" disabled="#{empty perfilesController.selected.perfilesCollection}" ajax="false">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="#{perfilesController.navigatePerfilesCollection()}"/>
+                        </p:menuitem>  
+                        <p:menuitem value="#{myBundle.PerfilesMenuItem_perfilPadre}" icon="ui-icon-search" update=":PerfilesEditPage:PerfilesEditForm" disabled="#{empty perfilesController.selected.perfilPadre}" actionListener="#{perfilesController.preparePerfilPadre}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:PerfilesEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.PerfilesMenuItem_tipoPerfil}" icon="ui-icon-search" update=":TipoPerfilesEditPage:TipoPerfilesEditForm" disabled="#{empty perfilesController.selected.tipoPerfil}" actionListener="#{perfilesController.prepareTipoPerfil}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:TipoPerfilesEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.PerfilesMenuItem_identidadCollection}" icon="ui-icon-search"  action="#{mobilePageController.navigateWithHistory}" disabled="#{empty perfilesController.selected.identidadCollection}" ajax="false">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="#{perfilesController.navigateIdentidadCollection()}"/>
+                        </p:menuitem>  
+                    </p:menu>
+                </p:overlayPanel>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

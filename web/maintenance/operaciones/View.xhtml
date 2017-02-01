@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OperacionesViewDlg" widgetVar="OperacionesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewOperacionesTitle}" closeOnEscape="true">
+
+            <h:form id="OperacionesViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{operacionesController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewOperacionesLabel_idOperaciones}"/>
+                        <h:outputText value="#{operacionesController.selected.idOperaciones}" title="#{myBundle.ViewOperacionesTitle_idOperaciones}"/>
+
+                        <h:outputText value="#{myBundle.ViewOperacionesLabel_nombre}"/>
+                        <h:outputText value="#{operacionesController.selected.nombre}" title="#{myBundle.ViewOperacionesTitle_nombre}"/>
+
+                        <h:outputText value="#{myBundle.ViewOperacionesLabel_descripcion}"/>
+                        <h:outputText value="#{operacionesController.selected.descripcion}" title="#{myBundle.ViewOperacionesTitle_descripcion}"/>
+
+                        <h:outputText value="#{myBundle.ViewOperacionesLabel_codigo}"/>
+                        <h:outputText value="#{operacionesController.selected.codigo}" title="#{myBundle.ViewOperacionesTitle_codigo}"/>
+
+                        <h:outputText value="#{myBundle.ViewOperacionesLabel_url}"/>
+                        <h:outputText value="#{operacionesController.selected.url}" title="#{myBundle.ViewOperacionesTitle_url}"/>
+
+                        <h:outputText value="#{myBundle.ViewOperacionesLabel_estado}"/>
+                        <h:outputText value="#{operacionesController.selected.estado}" title="#{myBundle.ViewOperacionesTitle_estado}"/>
+
+                        <h:outputText value="#{myBundle.ViewOperacionesLabel_perfilesCollection}"/>
+                        <h:selectManyMenu converter="perfilesConverter">
+                            <f:selectItems value="#{operacionesController.selected.perfilesCollection}"
+                                           var="perfilesCollectionItem"
+                                           itemValue="#{perfilesCollectionItem}"
+                                           itemLabel="#{perfilesCollectionItem.idPerfiles.toString()}"
+                                           />
+
+                        </h:selectManyMenu>
+
+                        <h:outputText value="#{myBundle.ViewOperacionesLabel_operacionPadre}"/>
+                        <h:outputText value="#{operacionesController.selected.operacionPadre.descripcion}"/>
+
+                        <h:outputText value="#{myBundle.ViewOperacionesLabel_tipoOperacion}"/>
+                        <h:outputText value="#{operacionesController.selected.tipoOperacion.descripcion}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('OperacionesViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

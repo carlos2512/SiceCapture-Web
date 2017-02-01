@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="OperacionesListPage">
+        <pm:header title="#{myBundle.ListOperacionesTitle}">
+            <h:form>
+                <p:commandButton id="backButton"   styleClass="ui-btn-left  ui-btn-inline" icon="ui-icon-arrow-l" value="#{myBundle.Back}" action="#{mobilePageController.navigateBackInHistory('/mobile/index')}"/>
+                <p:commandButton id="createButton" styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-plus"    value="#{myBundle.Create}" update=":OperacionesCreatePage:OperacionesCreateForm" actionListener="#{operacionesController.prepareCreate}" action="#{mobilePageController.navigateWithHistory('pm:OperacionesCreatePage')}">
+                    <f:actionListener binding="#{currentPageListener}"/>
+                </p:commandButton>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="OperacionesListForm">
+
+                <p:dataTable id="datalist"
+                             value="#{operacionesController.items}"
+                             var="item"
+                             rowKey="#{item.idOperaciones}"
+                             paginator="true"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{operacionesController.selected}"
+                             reflow="true">
+
+                    <p:ajax event="rowSelect"   update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{operacionesController.resetParents}"/>
+                    <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{operacionesController.resetParents}"/>
+                    <p:ajax event="swipeleft"   oncomplete="document.getElementById('OperacionesListPage:OperacionesListForm:deleteButton').click();"/>
+                    <p:ajax event="tap"         oncomplete="document.getElementById('OperacionesListPage:OperacionesListForm:editButton').click();"/>
+                    <p:ajax event="taphold"     oncomplete="document.getElementById('OperacionesListPage:OperacionesListForm:navigationMenuButton').click();"/>
+
+                    <p:column sortBy="#{item.idOperaciones}" filterBy="#{item.idOperaciones}" headerText="#{myBundle.ListOperacionesTitle_idOperaciones}">
+                        <h:outputText value="#{item.idOperaciones}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.nombre}" filterBy="#{item.nombre}" headerText="#{myBundle.ListOperacionesTitle_nombre}">
+                        <h:outputText value="#{item.nombre}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.descripcion}" filterBy="#{item.descripcion}" headerText="#{myBundle.ListOperacionesTitle_descripcion}">
+                        <h:outputText value="#{item.descripcion}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.codigo}" filterBy="#{item.codigo}" headerText="#{myBundle.ListOperacionesTitle_codigo}">
+                        <h:outputText value="#{item.codigo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.url}" filterBy="#{item.url}" headerText="#{myBundle.ListOperacionesTitle_url}">
+                        <h:outputText value="#{item.url}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.estado}" filterBy="#{item.estado}" headerText="#{myBundle.ListOperacionesTitle_estado}">
+                        <h:outputText value="#{item.estado}"/>
+                    </p:column>
+
+                    <!--
+                                        <p:column sortBy="#{item.operacionPadre.descripcion}" filterBy="#{item.operacionPadre.descripcion}" headerText="#{myBundle.ListOperacionesTitle_operacionPadre}">
+                                            <h:outputText value="#{item.operacionPadre.descripcion}"/>
+                                        </p:column>
+                    -->
+                    <!--
+                                        <p:column sortBy="#{item.tipoOperacion.descripcion}" filterBy="#{item.tipoOperacion.descripcion}" headerText="#{myBundle.ListOperacionesTitle_tipoOperacion}">
+                                            <h:outputText value="#{item.tipoOperacion.descripcion}"/>
+                                        </p:column>
+                    -->
+                </p:dataTable>
+                <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":OperacionesEditPage:OperacionesEditForm" disabled="#{empty operacionesController.selected}" actionListener="#{mobilePageController.currentPageListener}" action="#{mobilePageController.navigateWithHistory('pm:OperacionesEditPage')}"/>
+                <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{operacionesController.delete}" update=":growl,datalist" disabled="#{empty operacionesController.selected}">
+                    <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="navigationMenuButton" style="visibility: hidden;" value="#{myBundle.Menu}" disabled="#{empty operacionesController.selected}"/>
+
+                <p:overlayPanel id="navigationMenuPanel" for="navigationMenuButton" at="right" showEffect="overlay">
+                    <h2>#{myBundle.OperacionesHeading} #{myBundle.Menu}</h2>
+                    <p:menu>
+                        <p:menuitem value="#{myBundle.OperacionesMenuItem_perfilesCollection}" icon="ui-icon-search"  action="#{mobilePageController.navigateWithHistory}" disabled="#{empty operacionesController.selected.perfilesCollection}" ajax="false">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="#{operacionesController.navigatePerfilesCollection()}"/>
+                        </p:menuitem>  
+                        <p:menuitem value="#{myBundle.OperacionesMenuItem_operacionesCollection}" icon="ui-icon-search"  action="#{mobilePageController.navigateWithHistory}" disabled="#{empty operacionesController.selected.operacionesCollection}" ajax="false">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="#{operacionesController.navigateOperacionesCollection()}"/>
+                        </p:menuitem>  
+                        <p:menuitem value="#{myBundle.OperacionesMenuItem_operacionPadre}" icon="ui-icon-search" update=":OperacionesEditPage:OperacionesEditForm" disabled="#{empty operacionesController.selected.operacionPadre}" actionListener="#{operacionesController.prepareOperacionPadre}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:OperacionesEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.OperacionesMenuItem_tipoOperacion}" icon="ui-icon-search" update=":TipoOperacionesEditPage:TipoOperacionesEditForm" disabled="#{empty operacionesController.selected.tipoOperacion}" actionListener="#{operacionesController.prepareTipoOperacion}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:TipoOperacionesEditPage"/>
+                        </p:menuitem>
+                    </p:menu>
+                </p:overlayPanel>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

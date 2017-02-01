@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="IdentidadViewPage" lazy="true">
+        <pm:header title="#{myBundle.ViewIdentidadTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:IdentidadListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="IdentidadViewForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{identidadController.selected != null}">
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewIdentidadLabel_identidadPK_fkPersona}"/>
+                            <h:outputText value="#{identidadController.selected.identidadPK.fkPersona}" title="#{myBundle.ViewIdentidadTitle_identidadPK_fkPersona}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewIdentidadLabel_identidadPK_fkUsuario}"/>
+                            <h:outputText value="#{identidadController.selected.identidadPK.fkUsuario}" title="#{myBundle.ViewIdentidadTitle_identidadPK_fkUsuario}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewIdentidadLabel_identidadPK_fkPerfil}"/>
+                            <h:outputText value="#{identidadController.selected.identidadPK.fkPerfil}" title="#{myBundle.ViewIdentidadTitle_identidadPK_fkPerfil}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewIdentidadLabel_persona}"/>
+                            <h:outputText value="#{identidadController.selected.persona.idPersona}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewIdentidadLabel_usuario}"/>
+                            <h:outputText value="#{identidadController.selected.usuario.idUsuario}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewIdentidadLabel_perfiles}"/>
+                            <h:outputText value="#{identidadController.selected.perfiles.idPerfiles}"/>
+                        </pm:field>
+                    </p:outputPanel>
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

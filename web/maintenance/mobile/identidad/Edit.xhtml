@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="IdentidadEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditIdentidadTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:IdentidadListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="IdentidadEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{identidadController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditIdentidadLabel_identidadPK_fkPersona}" for="identidadPK_fkPersona" />
+                            <h:outputText id="identidadPK_fkPersona" value="#{identidadController.selected.identidadPK.fkPersona}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditIdentidadLabel_identidadPK_fkUsuario}" for="identidadPK_fkUsuario" />
+                            <h:outputText id="identidadPK_fkUsuario" value="#{identidadController.selected.identidadPK.fkUsuario}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditIdentidadLabel_identidadPK_fkPerfil}" for="identidadPK_fkPerfil" />
+                            <h:outputText id="identidadPK_fkPerfil" value="#{identidadController.selected.identidadPK.fkPerfil}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditIdentidadLabel_persona}" for="persona" />
+                            <h:outputText id="persona" value="#{identidadController.selected.persona}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditIdentidadLabel_usuario}" for="usuario" />
+                            <h:outputText id="usuario" value="#{identidadController.selected.usuario}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditIdentidadLabel_perfiles}" for="perfiles" />
+                            <h:outputText id="perfiles" value="#{identidadController.selected.perfiles}" />
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{identidadController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:IdentidadListPage:IdentidadListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:IdentidadListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

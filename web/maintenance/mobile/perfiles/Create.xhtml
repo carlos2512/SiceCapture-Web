@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PerfilesCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreatePerfilesTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:PerfilesListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PerfilesCreateForm">
+
+                <h:panelGroup id="display" rendered="#{perfilesController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePerfilesLabel_nombre}" for="nombre" />
+                            <p:inputText id="nombre" value="#{perfilesController.selected.nombre}" title="#{myBundle.CreatePerfilesTitle_nombre}" required="true" requiredMessage="#{myBundle.CreatePerfilesRequiredMessage_nombre}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePerfilesLabel_estado}" for="estado" />
+                            <p:inputText id="estado" value="#{perfilesController.selected.estado}" title="#{myBundle.CreatePerfilesTitle_estado}" required="true" requiredMessage="#{myBundle.CreatePerfilesRequiredMessage_estado}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePerfilesLabel_idioma}" for="idioma" />
+                            <p:inputText id="idioma" value="#{perfilesController.selected.idioma}" title="#{myBundle.CreatePerfilesTitle_idioma}" required="true" requiredMessage="#{myBundle.CreatePerfilesRequiredMessage_idioma}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePerfilesLabel_estilo}" for="estilo" />
+                            <p:inputText id="estilo" value="#{perfilesController.selected.estilo}" title="#{myBundle.CreatePerfilesTitle_estilo}" required="true" requiredMessage="#{myBundle.CreatePerfilesRequiredMessage_estilo}" size="45" maxlength="45"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePerfilesLabel_perfilPadre}" for="perfilPadre" />
+                            <p:selectOneMenu id="perfilPadre" value="#{perfilesController.selected.perfilPadre}"  converter="perfilesConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{perfilesController.items}"
+                                               var="perfilPadreItem"
+                                               itemValue="#{perfilPadreItem}"
+                                               itemLabel="#{perfilPadreItem.idPerfiles.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePerfilesLabel_tipoPerfil}" for="tipoPerfil" />
+                            <p:selectOneMenu id="tipoPerfil" value="#{perfilesController.selected.tipoPerfil}" required="true" requiredMessage="#{myBundle.CreatePerfilesRequiredMessage_tipoPerfil}" converter="tipoPerfilesConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{tipoPerfilesController.items}"
+                                               var="tipoPerfilItem"
+                                               itemValue="#{tipoPerfilItem}"
+                                               itemLabel="#{tipoPerfilItem.descripcion.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{perfilesController.saveNew}" value="#{myBundle.Save}" update="display,:PerfilesListPage:PerfilesListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:PerfilesListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

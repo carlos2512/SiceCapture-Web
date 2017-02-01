@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TipoOperacionesViewDlg" widgetVar="TipoOperacionesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewTipoOperacionesTitle}" closeOnEscape="true">
+
+            <h:form id="TipoOperacionesViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{tipoOperacionesController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewTipoOperacionesLabel_idTipooperacion}"/>
+                        <h:outputText value="#{tipoOperacionesController.selected.idTipooperacion}" title="#{myBundle.ViewTipoOperacionesTitle_idTipooperacion}"/>
+
+                        <h:outputText value="#{myBundle.ViewTipoOperacionesLabel_nombre}"/>
+                        <h:outputText value="#{tipoOperacionesController.selected.nombre}" title="#{myBundle.ViewTipoOperacionesTitle_nombre}"/>
+
+                        <h:outputText value="#{myBundle.ViewTipoOperacionesLabel_descripcion}"/>
+                        <h:outputText value="#{tipoOperacionesController.selected.descripcion}" title="#{myBundle.ViewTipoOperacionesTitle_descripcion}"/>
+
+                        <h:outputText value="#{myBundle.ViewTipoOperacionesLabel_codigo}"/>
+                        <h:outputText value="#{tipoOperacionesController.selected.codigo}" title="#{myBundle.ViewTipoOperacionesTitle_codigo}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('TipoOperacionesViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
